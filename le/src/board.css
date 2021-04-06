@@ -1,0 +1,85 @@
+html {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+  }
+  
+  .grid {
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    width: 1600px;
+  }
+  
+  .cell {
+    padding: 5px 0 0 0;
+  }
+  
+  .hello {
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  
+  p {
+    margin: 0 auto;
+    border: 0;
+    font-size: 18px;
+    font-family: "Avenir", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .item {
+    margin: 0px;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .passButton {
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .App {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .switch {
+    width: 50px;
+  }
+  
+  .turnInfo {
+    display: initial;
+  }
+  
+  .signout {
+    margin-top: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .item {
+      height: 40px;
+      width: 60px;
+    }
+  
+    .cell {
+      padding: 9px 0px 0px 0px;
+    }
+  
+    p {
+      font-size: 12px;
+      font-weight: normal;
+    }
+  
+    .grid {
+      width: 350px;
+    }
+  }
+  
