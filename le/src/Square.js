@@ -4,6 +4,7 @@ import "./board.css"
 
 const Square = ({
     itemName,
+    itemId,
     callback,
 }) => {
     const divStyle = {
@@ -15,7 +16,7 @@ const Square = ({
             className="item"
             style = {divStyle}
             onClick={() => {
-                callback(itemName);
+                callback(itemId);
             }}
         >
             <p className = "cell"> {itemName} </p>
