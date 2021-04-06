@@ -10,7 +10,7 @@ html {
     margin: 0 auto;
     text-align: center;
     display: block;
-    width: 1550px;
+    width: 1400px;
   }
 
   h1 {
@@ -58,8 +58,8 @@ html {
   .item {
     margin: 0px;
     display: inline-block;
-    width: 43px;
-    height: 40px;
+    width: 39px;
+    height: 30px;
   }
   
   .passButton {

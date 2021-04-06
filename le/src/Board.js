@@ -9,6 +9,7 @@ const Board = ({callback}) => {
     const [name, setName] = useState("level")
 
     const pieces = ["chef", "wall", "stv", "fr", " "]
+    const chickens = ["nug", "dino", "buff"]
 
     const changeHandler = (itemId) => {
         const new_items = items.slice()
@@ -20,8 +21,12 @@ const Board = ({callback}) => {
         setSelected(pieces[itemId])
     }
 
+    const changeChicken = (itemId) => {
+        /*TODO */
+    }
+
     const saveToJson = () => {
-        const json = JSON.stringify({items: items, spawns: []});
+        const json = JSON.stringify({name: name, items: items, spawns: []});
         return json
     }
 
@@ -49,6 +54,7 @@ const Board = ({callback}) => {
                 <Square
                  itemName = {itemName}
                  itemId = {i}
+                 hide = {false}
                  callback = {changeHandler}
                 />)
                 }
@@ -61,8 +67,17 @@ const Board = ({callback}) => {
                 <Square
                     itemName = {itemName}
                     itemId = {i}
+                    hide = {false}
                     callback = {changeSelector}
                 />)}
+                <br/>
+                {chickens.map((itemName, i) =>
+                <Square 
+                    itemName = {itemName}
+                    itemId = {i}
+                    hide = {selected == "fr" ? false: true}
+                    callback = {changeChicken}
+               /> )}
                 <form>
                     <label>
                         Level Name:

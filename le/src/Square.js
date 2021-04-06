@@ -6,10 +6,12 @@ const Square = ({
     itemName,
     itemId,
     callback,
+    hide,
 }) => {
     const divStyle = {
         color: "black",
-        border: "2px solid black"
+        border: "2px solid black",
+        display: hide ? "none" : "inline-block" 
     };
     return (
         <div
