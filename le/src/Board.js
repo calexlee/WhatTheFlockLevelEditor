@@ -5,10 +5,12 @@ import "./board.css"
 const Board = ({callback}) => {
 
     const [selected, setSelected] = useState("chef")
-    const [items, setItems] = useState(Array(576).fill(""))
+    const [height, setHeight] = useState(30)
+    const [width, setWidth] = useState(40)
+    const [items, setItems] = useState(Array(width*height).fill(""))
     const [name, setName] = useState("level")
 
-    const pieces = ["chef", "wall", "stv", "fr", " "]
+    const pieces = ["chef", "wall", "stove", "spawn", " "]
     const chickens = ["nug", "dino", "buff"]
 
     const changeHandler = (itemId) => {
@@ -51,12 +53,13 @@ const Board = ({callback}) => {
 
             <div className = "grid">
                 {items.map((itemName, i) =>
-                <Square
-                 itemName = {itemName}
-                 itemId = {i}
-                 hide = {false}
-                 callback = {changeHandler}
-                />)
+                    <Square
+                    itemName = {itemName}
+                    itemId = {i}
+                    hide = {false}
+                    callback = {changeHandler}
+                    />
+                )
                 }
 
             </div>
@@ -70,12 +73,12 @@ const Board = ({callback}) => {
                     hide = {false}
                     callback = {changeSelector}
                 />)}
-                <br/>
+                <p> Spawn Probabilities: </p>
                 {chickens.map((itemName, i) =>
                 <Square 
                     itemName = {itemName}
                     itemId = {i}
-                    hide = {selected == "fr" ? false: true}
+                    hide = {false}
                     callback = {changeChicken}
                /> )}
                 <form>

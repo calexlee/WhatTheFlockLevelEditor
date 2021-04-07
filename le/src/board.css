@@ -44,11 +44,17 @@ html {
     margin-top: 20px;
     margin-bottom: 0px;
   }
+
+  .square {
+    height: 85%;
+    width: 100%;
+    object-fit: contain;
+  }
   
   p {
     margin: 0 auto;
     border: 0;
-    font-size: 18px;
+    font-size: 12px;
     font-family: "Avenir", Arial, Helvetica, sans-serif;
     font-weight: bold;
     display: inline-block;
@@ -56,10 +62,11 @@ html {
   }
   
   .item {
-    margin: 0px;
+    margin: 0;
     display: inline-block;
-    width: 39px;
-    height: 30px;
+    width: 33px;
+    height: 20px;
+    padding: 0px;
   }
   
   .passButton {
