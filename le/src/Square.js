@@ -5,6 +5,9 @@ import stove from "./media/stove.png"
 import blank from "./media/blank.jpg"
 import wall from "./media/wall.png"
 import spawn from "./media/spawn.png"
+import nugget from "./media/nugget.png"
+import buffalo from "./media/buffalo.png"
+import dino from "./media/dino.png"
 
 const Square = ({
     itemName,
@@ -27,6 +30,12 @@ const Square = ({
             return wall
         } else if (i == "spawn"){
             return spawn
+        } else if (i == "chicken nugget"){
+            return nugget
+        }else if (i == "dino nugget"){
+            return dino
+        }else if (i == "buffalo chicken"){
+            return buffalo
         }else{
             return blank
         }

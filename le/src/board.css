@@ -39,6 +39,12 @@ html {
   .cell {
     padding: 5px 0 0 0;
   }
+
+  .jAdd {
+    resize: none;
+    padding-top: 5px;
+    height: 18px;
+  }
   
   .hello {
     margin-top: 20px;

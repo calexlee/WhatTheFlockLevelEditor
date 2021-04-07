@@ -11,7 +11,10 @@ const Board = ({callback}) => {
     const [name, setName] = useState("level")
 
     const pieces = ["chef", "wall", "stove", "spawn", " "]
-    const chickens = ["nug", "dino", "buff"]
+    const chickens = ["chicken nugget", "dino nugget", "buffalo chicken"]
+
+    const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))
+    const [chicken, setChicken] = useState(0)
 
     const changeHandler = (itemId) => {
         const new_items = items.slice()
@@ -23,12 +26,18 @@ const Board = ({callback}) => {
         setSelected(pieces[itemId])
     }
 
-    const changeChicken = (itemId) => {
-        /*TODO */
+    const changeChicken = (event) => {
+        const new_probs = spawnProbs.slice()
+        new_probs[chicken] = event.target.value
+        setSpawnProbs(new_probs)
+    }
+
+    const chickenSelected = (itemId) => {
+        setChicken(itemId)
     }
 
     const saveToJson = () => {
-        const json = JSON.stringify({name: name, items: items, spawns: []});
+        const json = JSON.stringify({name: name, items: items, chickens: chickens, spawn_probs: spawnProbs});
         return json
     }
 
@@ -79,12 +88,18 @@ const Board = ({callback}) => {
                     itemName = {itemName}
                     itemId = {i}
                     hide = {false}
-                    callback = {changeChicken}
+                    callback = {chickenSelected}
                /> )}
+               <form>
+                    <label>
+                        Spawn Probability of {chickens[chicken]}: 
+                        <textarea className= "jAdd" value = {spawnProbs[chicken]} onChange={changeChicken} />
+                    </label>
+                </form>
                 <form>
                     <label>
-                        Level Name:
-                        <textarea value = {name} onChange={handleName} />
+                        Level Name: 
+                        <textarea className= "jAdd" value = {name} onChange={handleName} />
                     </label>
                 </form>
                 <button className = "download" onClick = {downloadTxtFile}>Save JSON</button>
