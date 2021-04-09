@@ -5,12 +5,12 @@ import "./board.css"
 const Board = ({callback}) => {
 
     const [selected, setSelected] = useState("chef")
-    const [height, setHeight] = useState(30)
-    const [width, setWidth] = useState(40)
+    const [height, setHeight] = useState(27)
+    const [width, setWidth] = useState(48)
     const [items, setItems] = useState(Array(width*height).fill(""))
     const [name, setName] = useState("level")
 
-    const pieces = ["chef", "wall", "stove", "spawn", " "]
+    const pieces = ["chef", "wall", "stove", "spawn", "lure", "fire", "slow", " "]
     const chickens = ["chicken nugget", "dino nugget", "buffalo chicken"]
 
     const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))
@@ -55,10 +55,25 @@ const Board = ({callback}) => {
         element.click();
     }
 
+    const readFileOnUpload = (upJson) => {
+        const fileReader = new FileReader();
+        fileReader.onloadend = () => {
+            try {
+                setItems(JSON.parse(fileReader.result).items);
+            } catch(e) {
+                console.log("**Not valid JSON file!**");
+            }
+        }
+        if (upJson !== undefined) fileReader.readAsText(upJson);
+    }
+
     return (
         <div>
             <h1 className = "title"> WHAT THE FLOCK! Level Editor</h1>
-
+            <div className = "upload">
+            <p>Load json level: </p>
+            <input type="file" onChange={(e) => readFileOnUpload(e.target.files[0])} />
+            </div>
 
             <div className = "grid">
                 {items.map((itemName, i) =>
@@ -66,6 +81,7 @@ const Board = ({callback}) => {
                     itemName = {itemName}
                     itemId = {i}
                     hide = {false}
+                    large = {false}
                     callback = {changeHandler}
                     />
                 )
@@ -74,12 +90,19 @@ const Board = ({callback}) => {
             </div>
 
             <div className = "selector">
-                <p className = "selected">Currently Selected: {selected}</p>
+                <p className = "selected">Currently Selected: <Square 
+                itemName = {selected}
+                itemId = {0}
+                hide = {false}
+                large = {true}
+                callback = {() => false}
+                /></p>
                 {pieces.map((itemName, i) =>
                 <Square
                     itemName = {itemName}
                     itemId = {i}
                     hide = {false}
+                    large = {false}
                     callback = {changeSelector}
                 />)}
                 <p> Spawn Probabilities: </p>
@@ -88,6 +111,7 @@ const Board = ({callback}) => {
                     itemName = {itemName}
                     itemId = {i}
                     hide = {false}
+                    large = {false}
                     callback = {chickenSelected}
                /> )}
                <form>

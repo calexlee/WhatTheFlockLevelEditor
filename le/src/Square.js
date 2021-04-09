@@ -8,18 +8,26 @@ import spawn from "./media/spawn.png"
 import nugget from "./media/nugget.png"
 import buffalo from "./media/buffalo.png"
 import dino from "./media/dino.png"
+import lure from "./media/lure.png"
+import slow from "./media/slow.png"
+import fire from "./media/fire.png"
 
 const Square = ({
     itemName,
     itemId,
     callback,
     hide,
+    large,
 }) => {
     const divStyle = {
         color: "black",
         border: "1px solid black",
         display: hide ? "none" : "inline-block",
         "background-color": itemName == "wall" ? "black" : "white",
+        margin: 0,
+        width: large ? "100px" : "27px",
+        height: large ? "100px" : "20px",
+        padding: "0px",
     };
     const selectImg = (i) => {
         if (i == "chef"){
@@ -36,13 +44,18 @@ const Square = ({
             return dino
         }else if (i == "buffalo chicken"){
             return buffalo
+        }else if (i == "lure"){
+            return lure
+        }else if (i == "fire"){
+            return fire
+        }else if (i == "slow"){
+            return slow
         }else{
             return blank
         }
     }
     return (
         <div
-            className="item"
             style = {divStyle}
             onClick={() => {
                 callback(itemId);

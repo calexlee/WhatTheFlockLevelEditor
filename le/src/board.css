@@ -36,6 +36,12 @@ html {
     margin: 0 auto;
   }
 
+  .upload {
+    margin: 0 auto;
+    padding: 0px 0px 0px 70px;
+    text-align: center;
+  }
+
   .cell {
     padding: 5px 0 0 0;
   }
@@ -70,7 +76,7 @@ html {
   .item {
     margin: 0;
     display: inline-block;
-    width: 33px;
+    width: 27px;
     height: 20px;
     padding: 0px;
   }
