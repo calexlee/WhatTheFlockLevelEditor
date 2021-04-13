@@ -11,6 +11,7 @@ import dino from "./media/dino.png"
 import lure from "./media/lure.png"
 import slow from "./media/slow.png"
 import fire from "./media/fire.png"
+import shredded from "./media/shredded_chicken.png"
 
 const Square = ({
     itemName,
@@ -50,7 +51,9 @@ const Square = ({
             return fire
         }else if (i == "slow"){
             return slow
-        }else{
+        }else if (i == "shredded chicken") {
+            return shredded
+        } else {
             return blank
         }
     }

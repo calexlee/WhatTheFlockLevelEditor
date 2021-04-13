@@ -9,12 +9,32 @@ const Board = ({callback}) => {
     const [width, setWidth] = useState(48)
     const [items, setItems] = useState(Array(width*height).fill(""))
     const [name, setName] = useState("level")
+    const [startWaveSize, setWaveSize] = useState(5)
+    const [maxWaveSize, setMaxSize] = useState(50)
+    const [spawnGap, setSpawnGap] = useState(2)
+    const [waveGap, setWaveGap] = useState(30)
 
     const pieces = ["chef", "wall", "stove", "spawn", "lure", "fire", "slow", " "]
-    const chickens = ["chicken nugget", "dino nugget", "buffalo chicken"]
+    const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken"]
 
     const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))
     const [chicken, setChicken] = useState(0)
+
+    const changeWaveSize = (event) => {
+        setWaveSize(event.target.value)
+    }
+    
+    const changeWaveGap = (event) => {
+        setWaveGap(event.target.value)
+    }
+    
+    const changeMaxSize = (event) => {
+        setMaxSize(event.target.value)
+    }
+    
+    const changeSpawnGap = (event) => {
+        setSpawnGap(event.target.value)
+    }
 
     const changeHandler = (itemId) => {
         const new_items = items.slice()
@@ -37,7 +57,16 @@ const Board = ({callback}) => {
     }
 
     const saveToJson = () => {
-        const json = JSON.stringify({name: name, items: items, chickens: chickens, spawn_probs: spawnProbs});
+        const json = JSON.stringify(
+            {name: name, 
+                items: items, 
+                chickens: chickens, 
+                spawn_probs: spawnProbs,
+                starting_wave_size: startWaveSize,
+                max_wave_size: maxWaveSize,
+                spawn_gap: spawnGap,
+                wave_gap: waveGap
+            });
         return json
     }
 
@@ -60,6 +89,11 @@ const Board = ({callback}) => {
         fileReader.onloadend = () => {
             try {
                 setItems(JSON.parse(fileReader.result).items);
+                setName(JSON.parse(fileReader.result).name);
+                setMaxSize(JSON.parse(fileReader.result).max_wave_size);
+                setSpawnGap(JSON.parse(fileReader.result).spawn_gap);
+                setWaveGap(JSON.parse(fileReader.result).wave_gap);
+                setWaveSize(JSON.parse(fileReader.result).starting_wave_size);
             } catch(e) {
                 console.log("**Not valid JSON file!**");
             }
@@ -120,6 +154,30 @@ const Board = ({callback}) => {
                         <textarea className= "jAdd" value = {spawnProbs[chicken]} onChange={changeChicken} />
                     </label>
                 </form>
+                <h2> Wave Adjustments</h2>
+                <form>
+                    <label>
+                        Starting Wave Size:
+                        <textarea className= "jAdd" value = {startWaveSize} onChange= {changeWaveSize} />
+                    </label>
+                    <br/>
+                    <label>
+                        Maximum Wave Size ( 50 or less recommended):
+                        <textarea className= "jAdd" value = {maxWaveSize} onChange= {changeMaxSize} />
+                    </label>
+                    <br/>
+                    <label>
+                        Time between Spawns:
+                        <textarea className= "jAdd" value = {spawnGap} onChange= {changeSpawnGap} />
+                    </label>
+                    <br/>
+                    <label>
+                        Time between each wave: 
+                        <textarea className= "jAdd" value = {waveGap} onChange= {changeWaveGap} />
+                    </label>
+
+                </form>
+
                 <form>
                     <label>
                         Level Name: 
