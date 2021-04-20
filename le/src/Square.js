@@ -12,6 +12,13 @@ import lure from "./media/lure.png"
 import slow from "./media/slow.png"
 import fire from "./media/fire.png"
 import shredded from "./media/shredded_chicken.png"
+import wall_botline from "./media/wall_bottomline.png"
+import wall_brownsingle from "./media/wall_brownsingle.png"
+import wall_leftline from "./media/wall_leftline.png"
+import wall_rightline from "./media/wall_rightline.png"
+import wall_topline from "./media/wall_topline.png"
+import wall_yellowbottom from "./media/wall_yellowbottom.png"
+import wall_yellowsingle from "./media/wall_yellowsingle.png"
 
 const Square = ({
     itemName,
@@ -24,7 +31,7 @@ const Square = ({
         color: "black",
         border: "1px solid black",
         display: hide ? "none" : "inline-block",
-        "background-color": itemName == "wall" ? "black" : "white",
+        "background-color": "white",
         margin: 0,
         width: large ? "100px" : "27px",
         height: large ? "100px" : "20px",
@@ -35,8 +42,6 @@ const Square = ({
             return chef
         } else if (i == "stove"){
             return stove
-        } else if (i == "wall"){
-            return wall
         } else if (i == "spawn"){
             return spawn
         } else if (i == "chicken nugget"){
@@ -45,14 +50,28 @@ const Square = ({
             return dino
         }else if (i == "buffalo chicken"){
             return buffalo
-        }else if (i == "lure"){
+        }  else if (i == "shredded chicken") {
+            return shredded
+        } else if (i == "lure"){
             return lure
         }else if (i == "fire"){
             return fire
         }else if (i == "slow"){
             return slow
-        }else if (i == "shredded chicken") {
-            return shredded
+        }else if (i == "wall") {
+            return wall_brownsingle
+        } else if (i == "wall_b") {
+            return wall_botline
+        } else if (i == "wall_l") {
+            return wall_leftline
+        } else if (i == "wall_r") {
+            return wall_rightline
+        } else if (i == "wall_t") {
+            return wall_topline
+        } else if (i == "ywall") {
+            return wall_yellowsingle
+        } else if (i == "ywall_b") {
+            return wall_yellowbottom
         } else {
             return blank
         }

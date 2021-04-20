@@ -14,8 +14,8 @@ const Board = ({callback}) => {
     const [spawnGap, setSpawnGap] = useState(2)
     const [waveGap, setWaveGap] = useState(30)
 
-    const pieces = ["chef", "wall", "stove", "spawn", "lure", "fire", "slow", " "]
-    const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken"]
+    const pieces = ["chef", "wall", "wall_b", "wall_l", "wall_r", "wall_t", "ywall", "ywall_b", "stove", "spawn", "lure", "fire", "slow", " "]
+    const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken", "dino nugget"]
 
     const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))
     const [chicken, setChicken] = useState(0)
@@ -94,6 +94,7 @@ const Board = ({callback}) => {
                 setSpawnGap(JSON.parse(fileReader.result).spawn_gap);
                 setWaveGap(JSON.parse(fileReader.result).wave_gap);
                 setWaveSize(JSON.parse(fileReader.result).starting_wave_size);
+                setSpawnProbs(JSON.parse(fileReader.result).spawn_probs);
             } catch(e) {
                 console.log("**Not valid JSON file!**");
             }
