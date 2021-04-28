@@ -3,7 +3,6 @@ import "./board.css"
 import chef from "./media/chef.png"
 import stove from "./media/stove.png"
 import blank from "./media/blank.jpg"
-import wall from "./media/wall.png"
 import spawn from "./media/spawn.png"
 import nugget from "./media/nugget.png"
 import buffalo from "./media/buffalo.png"
@@ -12,13 +11,19 @@ import lure from "./media/lure.png"
 import slow from "./media/slow.png"
 import fire from "./media/fire.png"
 import shredded from "./media/shredded_chicken.png"
-import wall_botline from "./media/wall_bottomline.png"
-import wall_brownsingle from "./media/wall_brownsingle.png"
-import wall_leftline from "./media/wall_leftline.png"
-import wall_rightline from "./media/wall_rightline.png"
-import wall_topline from "./media/wall_topline.png"
-import wall_yellowbottom from "./media/wall_yellowbottom.png"
-import wall_yellowsingle from "./media/wall_yellowsingle.png"
+import wall_botline from "./media/wall_b.png"
+import wall_brownsingle from "./media/wall.png"
+import wall_leftline from "./media/wall_l.png"
+import wall_rightline from "./media/wall_r.png"
+import wall_topline from "./media/wall_t.png"
+import wall_yellowbottom from "./media/ywall_b.png"
+import wall_yellowsingle from "./media/ywall.png"
+import wall_topleftcorner from "./media/wall_tlc.png"
+import wall_toprightcorner from "./media/wall_trc.png"
+import wall_brownleftcorner from "./media/wall_blc.png"
+import wall_brownrightcorner from "./media/wall_brc.png"
+import hot from "./media/hot_chick.png"
+
 
 const Square = ({
     itemName,
@@ -52,7 +57,9 @@ const Square = ({
             return buffalo
         }  else if (i == "shredded chicken") {
             return shredded
-        } else if (i == "lure"){
+        } else if (i == "hot chick") {
+            return hot
+        }else if (i == "lure"){
             return lure
         }else if (i == "fire"){
             return fire
@@ -72,6 +79,14 @@ const Square = ({
             return wall_yellowsingle
         } else if (i == "ywall_b") {
             return wall_yellowbottom
+        }  else if (i == "wall_tlc") {
+            return wall_topleftcorner
+        }  else if (i == "wall_brc") {
+            return wall_brownrightcorner
+        }  else if (i == "wall_blc") {
+            return wall_brownleftcorner
+        }  else if (i == "wall_trc") {
+            return wall_toprightcorner
         } else {
             return blank
         }
@@ -79,6 +94,9 @@ const Square = ({
     return (
         <div
             style = {divStyle}
+            onDragOver={() => {
+                callback(itemId);
+            }}
             onClick={() => {
                 callback(itemId);
             }}

@@ -13,12 +13,22 @@ const Board = ({callback}) => {
     const [maxWaveSize, setMaxSize] = useState(50)
     const [spawnGap, setSpawnGap] = useState(2)
     const [waveGap, setWaveGap] = useState(30)
+    const [max_temp, setMaxTemp] = useState(30)
+    const [temp_red, setTempRed] = useState(0.5)
 
-    const pieces = ["chef", "wall", "wall_b", "wall_l", "wall_r", "wall_t", "ywall", "ywall_b", "stove", "spawn", "lure", "fire", "slow", " "]
-    const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken", "dino nugget"]
+    const pieces = ["chef", "wall", "wall_b", "wall_l", "wall_r", "wall_t", "ywall", "ywall_b", "wall_tlc", "wall_trc", "wall_blc", "wall_brc", "stove", "spawn", "lure", "fire", "slow", " "]
+    const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken", "dino nugget", "hot chick"]
 
     const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))
     const [chicken, setChicken] = useState(0)
+
+    const changeMaxTemp = (event) => {
+        setMaxTemp(event.target.value)
+    }
+
+    const changeTempRed = (event) => {
+        setTempRed(event.target.value)
+    }
 
     const changeWaveSize = (event) => {
         setWaveSize(event.target.value)
@@ -65,7 +75,9 @@ const Board = ({callback}) => {
                 starting_wave_size: startWaveSize,
                 max_wave_size: maxWaveSize,
                 spawn_gap: spawnGap,
-                wave_gap: waveGap
+                wave_gap: waveGap,
+                temp: max_temp,
+                temp_reduction: temp_red,
             });
         return json
     }
@@ -95,6 +107,8 @@ const Board = ({callback}) => {
                 setWaveGap(JSON.parse(fileReader.result).wave_gap);
                 setWaveSize(JSON.parse(fileReader.result).starting_wave_size);
                 setSpawnProbs(JSON.parse(fileReader.result).spawn_probs);
+                setMaxTemp(JSON.parse(fileReader.result).temp);
+                setTempRed(JSON.parse(fileReader.result).temp_reduction);
             } catch(e) {
                 console.log("**Not valid JSON file!**");
             }
@@ -175,6 +189,16 @@ const Board = ({callback}) => {
                     <label>
                         Time between each wave: 
                         <textarea className= "jAdd" value = {waveGap} onChange= {changeWaveGap} />
+                    </label>
+                    <br/>
+                    <label>
+                        Max temperature: 
+                        <textarea className= "jAdd" value = {max_temp} onChange= {changeMaxTemp} />
+                    </label>
+                    <br/>
+                    <label>
+                        Temperature Reduction (per Slap): 
+                        <textarea className= "jAdd" value = {temp_red} onChange= {changeTempRed} />
                     </label>
 
                 </form>
