@@ -119,6 +119,8 @@ const Board2 = ({callback}) => {
                     hide = {false}
                     large = {false}
                     callback = {changeHandler}
+                    x = {i % width}
+                    y = {height - Math.floor(i / width) - 1}
                     />
                 )
                 }

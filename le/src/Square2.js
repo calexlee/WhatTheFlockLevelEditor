@@ -43,6 +43,8 @@ const Square2 = ({
     callback,
     hide,
     large,
+    x,
+    y,
 }) => {
     const divStyle = {
         color: "black",
@@ -137,7 +139,7 @@ const Square2 = ({
                 callback(itemId);
             }}
         >
-            {/* <p className = "square"> {itemId}</p> */}
+            {/* <p className = "square"> {x},{y} </p> */}
             <img src={selectImg(itemName)} alt = "" className = "square"/> 
         </div>
     );

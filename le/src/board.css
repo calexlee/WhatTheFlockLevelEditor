@@ -10,7 +10,11 @@ html {
     margin: 0 auto;
     text-align: center;
     display: block;
-    width: 1400px;
+    width: 950px;
+  }
+
+  .square {
+    font-size: 10px;
   }
 
   h1 {
