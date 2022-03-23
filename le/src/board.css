@@ -13,6 +13,16 @@ html {
     width: 930px;
   }
 
+  .textfields{
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+  }
+
+  form{
+    padding-right: 400px;
+  }
+
   .square {
     font-size: 10px;
   }

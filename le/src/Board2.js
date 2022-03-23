@@ -14,27 +14,41 @@ const Board2 = ({callback}) => {
         startPos: [],
         waveNumber: 1,
         selectedWave: 1,
+        waveSpawnTimes: Array(1).fill(0),
     })
 
     const pieces = ["chef", "wall", " "]
 
-    const enemies = ["chicken nugget", "buffalo chicken", "shredded chicken", "dino nugget", "hot chick"]
+    const enemies = ["specter", "mirror"]
 
     const changeBiome = (event) => {
         setBiome(event.target.value)
     }
 
-    const addWaveNumber = (event) => {
+    const changeSpawnTimes = (event) => {
+        const newWaveSpawns = items.waveSpawnTimes.slice()
+        newWaveSpawns[items.selectedWave] = event.target.value
+        setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber + 1, selectedWave: items.selectedWave, waveSpawnTimes: newWaveSpawns})
+    }
+
+    const addWaveNumber = () => {
         const new_items = items.items.slice()
         new_items[new_items.length] = new_items[0].slice()
-        setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber + 1, selectedWave: items.selectedWave})
+        const newSpawnTimes = items.waveSpawnTimes.slice()
+        newSpawnTimes.push(0)
+        setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber + 1, selectedWave: items.selectedWave, waveSpawnTimes: newSpawnTimes})
     }
     
-    const subWaveNumber = (event) => {
-        if (items.waveNumber > 0){
-            setItems({items: items.items.pop(), startPos: items.startPos, waveNumber: items.waveNumber - 1, selectedWave: items.selectedWave})
-            if (items.waveNumber < items.selectedWave){
-                decSelectedWave()
+    const subWaveNumber = () => {
+        if (items.waveNumber > 1){
+            var new_items =  items.items.slice()
+            new_items.pop()
+            var new_spawn_times = items.waveSpawnTimes.slice()
+            new_spawn_times.pop()
+            if (items.waveNumber - 1 < items.selectedWave){
+                setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber - 1, selectedWave: items.selectedWave - 1, waveSpawnTimes: new_spawn_times})
+            } else {
+                setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber - 1, selectedWave: items.selectedWave, waveSpawnTimes: new_spawn_times})
             }
         }
     }
@@ -50,9 +64,9 @@ const Board2 = ({callback}) => {
             new_item_array[items.selectedWave-1][itemId] = selected
         }
         if (selected === "chef"){
-            setItems({items: new_item_array, startPos: [x,y], waveNumber: items.waveNumber, selectedWave: items.selectedWave})
+            setItems({items: new_item_array, startPos: [x,y], waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: items.waveSpawnTimes})
         } else {
-            setItems({items: new_item_array, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave})
+            setItems({items: new_item_array, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: items.waveSpawnTimes})
         }
     }
 
@@ -75,7 +89,7 @@ const Board2 = ({callback}) => {
                 }
             }
         })
-        console.log(totalPlats)
+        return totalPlats
     }
     
     const calcEnemyPos = (items) => {
@@ -90,6 +104,29 @@ const Board2 = ({callback}) => {
             x = (x + 1) % width
             if (x === 0) y--
         })
+        return enemyPosForWave
+    }
+
+    const calcAllEnemyPos = () => {
+        var allEnemyPos = []
+        items.items.forEach(itemlist => {
+            allEnemyPos.push(calcEnemyPos(itemlist))
+        })
+        return allEnemyPos
+    }
+
+    const getEnemyList = () => {
+        var enemyList = []
+        items.items.forEach(itemlist => {
+            var enemySlice = []
+            itemlist.forEach(item => {
+                if (enemies.includes(item)){
+                    enemySlice.push(item)
+                }
+            })
+            enemyList.push(enemySlice)
+        })
+        return enemyList
     }
 
     const changeSelector = (itemId) => {
@@ -99,28 +136,28 @@ const Board2 = ({callback}) => {
 
     const incSelectedWave = () => {
         if (items.selectedWave < items.waveNumber){
-            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave + 1})
+            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave + 1, waveSpawnTimes: items.waveSpawnTimes})
         }
     }
 
     const decSelectedWave = () => {
-        if (items.selectedWave > 0) {
-            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave - 1})
+        if (items.selectedWave > 1) {
+            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave - 1, waveSpawnTimes: items.waveSpawnTimes})
         }
     }
 
     const saveToJson = () => {
         const json = JSON.stringify(
             {name: name, 
-                // start_pos: startPos,
-                // biome: startBiome,
-                // level_height: height,
-                // spawn_order: spawnOrder,
-                // spawn_pos: spawnPositions,
-                // spawn_times: spawnTimes,
+                start_pos: items.startPos,
+                biome: startBiome,
+                level_height: height,
+                spawn_order: getEnemyList(),
+                spawn_pos: calcAllEnemyPos(),
+                spawn_times: items.spawnTimes,
                 // spawner_types: spawnerTypes,
                 // unlocks: unlocks,
-                // platforms: platforms,
+                platforms: calcPlatforms(items.items[0]),
             });
         return json
     }
@@ -155,10 +192,10 @@ const Board2 = ({callback}) => {
     return (
         <div>
             <h1 className = "title"> Liminal Spirit Level Editor</h1>
-            <div className = "upload">
+            {/* <div className = "upload">
             <p>Load json level: </p>
             <input type="file" onChange={(e) => readFileOnUpload(e.target.files[0])} />
-            </div>
+            </div> */}
 
             <div className = "grid">
                 {items.items[items.selectedWave-1].map((itemName, i) =>
@@ -201,13 +238,13 @@ const Board2 = ({callback}) => {
                     large = {false}
                     callback = {changeSelector}
                /> )}
-               <div></div>
                <br></br>
                 <button className= "addWave" onClick = {addWaveNumber}>Add Wave to Level</button>
                 <button className= "subWave" onClick = {subWaveNumber}> Subtract Wave from Level </button>
                 <button className= "nextWave" onClick = {incSelectedWave}>Go to Next Wave</button>
                 <button className= "prevWave" onClick = {decSelectedWave}> Go to Previous Wave </button>
                 <br/>
+                <div className="textfields">
                 <form>
                     <label>
                         Spawns in Wave {items.selectedWave}
@@ -216,21 +253,19 @@ const Board2 = ({callback}) => {
                     <label> 
                         There are {items.waveNumber} total waves
                     </label>
-                    <label>
-                        The starting position is {items.startPos}
-                    </label>
                 </form>
                 <h2> Other Values </h2>
                 <form>
                     <label>
+                        Wave {items.selectedWave} Spawn Time: 
+                        <textarea className = "jAdd" value = {items.waveSpawnTimes[items.selectedWave]} onChange = {changeSpawnTimes} />
+                    </label>
+                </form>
+                <form>
+                <label>
                         Biome:
                         <textarea className= "jAdd" value = {startBiome} onChange= {changeBiome} />
                     </label>
-                    <br/>
-                    <label>
-                        Spawner Types:
-                    </label>
-
                 </form>
 
                 <form>
@@ -239,6 +274,7 @@ const Board2 = ({callback}) => {
                         <textarea className= "jAdd" value = {name} onChange={handleName} />
                     </label>
                 </form>
+                </div>
                 <button className = "download" onClick = {downloadTxtFile}>Save JSON</button>
             </div>
 
