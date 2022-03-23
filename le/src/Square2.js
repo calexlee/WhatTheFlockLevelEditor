@@ -133,10 +133,10 @@ const Square2 = ({
         <div
             style = {divStyle}
             onDragOver={() => {
-                callback(itemId);
+                callback(itemId, x, y, itemName);
             }}
             onClick={() => {
-                callback(itemId);
+                callback(itemId, x, y, itemName);
             }}
         >
             {/* <p className = "square"> {x},{y} </p> */}
