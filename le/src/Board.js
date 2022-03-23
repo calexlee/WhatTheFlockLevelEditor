@@ -16,7 +16,9 @@ const Board = ({callback}) => {
     const [max_temp, setMaxTemp] = useState(30)
     const [temp_red, setTempRed] = useState(0.5)
 
-    const pieces = ["chef", "wall", "wall_b", "wall_l", "wall_r", "wall_t", "ywall", "ywall_b", "wall_tlc", "wall_trc", "wall_blc", "wall_brc", "stove", "spawn", "lure", "fire", "slow", " "]
+    const pieces = ["chef", "wall", "wall_b", "wall_l", "wall_r", "wall_t", "ywall", "ywall_b", "wall_tlc",
+     "wall_trc", "wall_blc", "wall_brc", "ceiling", "wall_t_2", "wall_tlc_2", "wall_trc_2", "ceiling_b", "stove",
+    "spawn", "lure", "fire", "slow", "tut_cook", "tut_cooler","tut_hotsauce","tut_run","tut_slap","tut_temperature", "tut_toaster", " "]
     const chickens = ["chicken nugget", "buffalo chicken", "shredded chicken", "dino nugget", "hot chick"]
 
     const [spawnProbs, setSpawnProbs] = useState(Array(chickens.length).fill(0))

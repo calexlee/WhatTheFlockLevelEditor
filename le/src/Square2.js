@@ -37,7 +37,7 @@ import tut_temperature from "./media/tutorial_temperature.png"
 import tut_toaster from "./media/tutorial_toaster.png"
 
 
-const Square = ({
+const Square2 = ({
     itemName,
     itemId,
     callback,
@@ -143,4 +143,4 @@ const Square = ({
     );
 };
 
-export default Square;
+export default Square2;
