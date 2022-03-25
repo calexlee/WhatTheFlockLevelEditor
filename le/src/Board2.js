@@ -27,8 +27,10 @@ const Board2 = ({callback}) => {
 
     const changeSpawnTimes = (event) => {
         const newWaveSpawns = items.waveSpawnTimes.slice()
-        newWaveSpawns[items.selectedWave] = event.target.value
-        setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber + 1, selectedWave: items.selectedWave, waveSpawnTimes: newWaveSpawns})
+        const num = parseInt(event.target.value) 
+        newWaveSpawns[items.selectedWave - 1] = isNaN(num) ? 0 : num
+        console.log(newWaveSpawns)
+        setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: newWaveSpawns})
     }
 
     const addWaveNumber = () => {
@@ -154,7 +156,7 @@ const Board2 = ({callback}) => {
                 level_height: height,
                 spawn_order: getEnemyList(),
                 spawn_pos: calcAllEnemyPos(),
-                spawn_times: items.spawnTimes,
+                spawn_times: items.waveSpawnTimes,
                 // spawner_types: spawnerTypes,
                 // unlocks: unlocks,
                 platforms: calcPlatforms(items.items[0]),
@@ -257,8 +259,8 @@ const Board2 = ({callback}) => {
                 <h2> Other Values </h2>
                 <form>
                     <label>
-                        Wave {items.selectedWave} Spawn Time: 
-                        <textarea className = "jAdd" value = {items.waveSpawnTimes[items.selectedWave]} onChange = {changeSpawnTimes} />
+                        Spawn Times are currently [{items.waveSpawnTimes.map((i) =>{ return <span>[{i}]</span>})}]: 
+                        <textarea className = "jAdd" onChange = {changeSpawnTimes} />
                     </label>
                 </form>
                 <form>
