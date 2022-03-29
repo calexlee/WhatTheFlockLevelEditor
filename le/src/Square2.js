@@ -4,7 +4,12 @@ import chef from "./media/player.png"
 import blank from "./media/blank.jpg"
 import wall_brownsingle from "./media/wall.png"
 import specter from "./media/specter.png"
-import mirror from "./media/mirror.png"
+import triangle from "./media/triangle.png"
+import square from "./media/square.png"
+import circle from "./media/circle.png"
+import seeker from "./media/seeker.png"
+import glutton from "./media/glutton.png"
+import lost from "./media/lost.png"
 
 
 const Square2 = ({
@@ -33,8 +38,18 @@ const Square2 = ({
             return wall_brownsingle
         } else if (i === "specter"){
           return specter  
-        } else if (i === "mirror"){
-            return mirror  
+        } else if (i === "square"){
+            return square  
+        }else if (i === "triangle"){
+            return triangle  
+        }else if (i === "circle"){
+            return circle  
+        }else if (i === "seeker"){
+            return seeker  
+        }else if (i === "glutton"){
+            return glutton  
+        }else if (i === "lost"){
+            return lost  
         } else {
             return blank
         }

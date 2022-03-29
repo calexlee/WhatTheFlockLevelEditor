@@ -2,6 +2,8 @@ import React, {useState} from "react"
 import Square2 from "./Square2.js"
 import "./board.css"
 
+var CryptoJS = require("crypto-js");
+
 const Board2 = ({callback}) => {
 
     const [selected, setSelected] = useState("chef")
@@ -10,65 +12,64 @@ const Board2 = ({callback}) => {
     const [name, setName] = useState("level")
     const [startBiome, setBiome] = useState("cave")
     const [items, setItems] = useState({
-        items: [...Array(1)].map(() => Array(width*height).fill("")), 
-        startPos: [],
-        waveNumber: 1,
-        selectedWave: 1,
-        waveSpawnTimes: Array(1).fill(0),
+        items: [...Array(1)].map(() => Array(54*32).fill(" ")), 
+        startpos: [],
+        wavenumber: 1,
+        selectedwave: 1,
+        wavespawntimes: Array(1).fill(0),
     })
 
     const pieces = ["chef", "wall", " "]
 
-    const enemies = ["specter", "mirror"]
+    const enemies = ["lost", "specter", "circle", "triangle", "square", "seeker", "glutton", " "]
 
     const changeBiome = (event) => {
         setBiome(event.target.value)
     }
 
     const changeSpawnTimes = (event) => {
-        const newWaveSpawns = items.waveSpawnTimes.slice()
+        const newWaveSpawns = items.wavespawntimes.slice()
         const num = parseInt(event.target.value) 
-        newWaveSpawns[items.selectedWave - 1] = isNaN(num) ? 0 : num
-        console.log(newWaveSpawns)
-        setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: newWaveSpawns})
+        newWaveSpawns[items.selectedwave - 1] = isNaN(num) ? 0 : num
+        setItems({items: items.items, startpos: items.startpos, wavenumber: items.wavenumber, selectedwave: items.selectedwave, wavespawntimes: newWaveSpawns})
     }
 
     const addWaveNumber = () => {
         const new_items = items.items.slice()
         new_items[new_items.length] = new_items[0].slice()
-        const newSpawnTimes = items.waveSpawnTimes.slice()
+        const newSpawnTimes = items.wavespawntimes.slice()
         newSpawnTimes.push(0)
-        setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber + 1, selectedWave: items.selectedWave, waveSpawnTimes: newSpawnTimes})
+        setItems({items: new_items, startpos: items.startpos, wavenumber: items.wavenumber + 1, selectedwave: items.selectedwave, wavespawntimes: newSpawnTimes})
     }
     
     const subWaveNumber = () => {
-        if (items.waveNumber > 1){
+        if (items.wavenumber > 1){
             var new_items =  items.items.slice()
             new_items.pop()
-            var new_spawn_times = items.waveSpawnTimes.slice()
+            var new_spawn_times = items.wavespawntimes.slice()
             new_spawn_times.pop()
-            if (items.waveNumber - 1 < items.selectedWave){
-                setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber - 1, selectedWave: items.selectedWave - 1, waveSpawnTimes: new_spawn_times})
+            if (items.wavenumber - 1 < items.selectedwave){
+                setItems({items: new_items, startpos: items.startpos, wavenumber: items.wavenumber - 1, selectedwave: items.selectedwave - 1, wavespawntimes: new_spawn_times})
             } else {
-                setItems({items: new_items, startPos: items.startPos, waveNumber: items.waveNumber - 1, selectedWave: items.selectedWave, waveSpawnTimes: new_spawn_times})
+                setItems({items: new_items, startpos: items.startpos, wavenumber: items.wavenumber - 1, selectedwave: items.selectedwave, wavespawntimes: new_spawn_times})
             }
         }
     }
 
     const changeHandler = (itemId, x, y, itemName) => {
         const new_item_array = items.items.slice()
-        if (!enemies.includes(selected)){ // if not enemies
+        if (!enemies.includes(selected) || (selected === " " && !enemies.includes(itemName))){ // if not enemies 
             new_item_array.forEach(array => {
                 array[itemId] = selected
             })
         } else {
             // if an enemy
-            new_item_array[items.selectedWave-1][itemId] = selected
+            new_item_array[items.selectedwave-1][itemId] = selected
         }
         if (selected === "chef"){
-            setItems({items: new_item_array, startPos: [x,y], waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: items.waveSpawnTimes})
+            setItems({items: new_item_array, startpos: [x,y], wavenumber: items.wavenumber, selectedwave: items.selectedwave, wavespawntimes: items.wavespawntimes})
         } else {
-            setItems({items: new_item_array, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave, waveSpawnTimes: items.waveSpawnTimes})
+            setItems({items: new_item_array, startpos: items.startpos, wavenumber: items.wavenumber, selectedwave: items.selectedwave, wavespawntimes: items.wavespawntimes})
         }
     }
 
@@ -137,29 +138,30 @@ const Board2 = ({callback}) => {
     }
 
     const incSelectedWave = () => {
-        if (items.selectedWave < items.waveNumber){
-            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave + 1, waveSpawnTimes: items.waveSpawnTimes})
+        if (items.selectedwave < items.wavenumber){
+            setItems({items: items.items, startpos: items.startpos, wavenumber: items.wavenumber, selectedwave: items.selectedwave + 1, wavespawntimes: items.wavespawntimes})
         }
     }
 
     const decSelectedWave = () => {
-        if (items.selectedWave > 1) {
-            setItems({items: items.items, startPos: items.startPos, waveNumber: items.waveNumber, selectedWave: items.selectedWave - 1, waveSpawnTimes: items.waveSpawnTimes})
+        if (items.selectedwave > 1) {
+            setItems({items: items.items, startpos: items.startpos, wavenumber: items.wavenumber, selectedwave: items.selectedwave - 1, wavespawntimes: items.wavespawntimes})
         }
     }
 
     const saveToJson = () => {
         const json = JSON.stringify(
             {name: name, 
-                start_pos: items.startPos,
+                start_pos: items.startpos,
                 biome: startBiome,
                 level_height: height,
                 spawn_order: getEnemyList(),
                 spawn_pos: calcAllEnemyPos(),
-                spawn_times: items.waveSpawnTimes,
+                spawn_times: items.wavespawntimes,
                 // spawner_types: spawnerTypes,
                 // unlocks: unlocks,
                 platforms: calcPlatforms(items.items[0]),
+                items: items.items,
             });
         return json
     }
@@ -182,7 +184,13 @@ const Board2 = ({callback}) => {
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             try {
-                setItems(JSON.parse(fileReader.result).items);
+                setItems({items: JSON.parse(fileReader.result).items, 
+                          startpos: JSON.parse(fileReader.result).start_pos,
+                          wavenumber: JSON.parse(fileReader.result).items.length,
+                          selectedwave: 1,
+                          wavespawntimes: JSON.parse(fileReader.result).spawn_order});
+                setHeight(JSON.parse(fileReader.result).height);
+                setBiome(JSON.parse(fileReader.result).biome);
                 setName(JSON.parse(fileReader.result).name);
             } catch(e) {
                 console.log("**Not valid JSON file!**");
@@ -194,13 +202,13 @@ const Board2 = ({callback}) => {
     return (
         <div>
             <h1 className = "title"> Liminal Spirit Level Editor</h1>
-            {/* <div className = "upload">
+            <div className = "upload">
             <p>Load json level: </p>
             <input type="file" onChange={(e) => readFileOnUpload(e.target.files[0])} />
-            </div> */}
+            </div>
 
             <div className = "grid">
-                {items.items[items.selectedWave-1].map((itemName, i) =>
+                {items.items[items.selectedwave-1].map((itemName, i) =>
                     <Square2
                     itemName = {itemName}
                     itemId = {i}
@@ -249,17 +257,17 @@ const Board2 = ({callback}) => {
                 <div className="textfields">
                 <form>
                     <label>
-                        Spawns in Wave {items.selectedWave}
+                        Spawns in Wave {items.selectedwave}
                     </label>
                     <br/>
                     <label> 
-                        There are {items.waveNumber} total waves
+                        There are {items.wavenumber} total waves
                     </label>
                 </form>
                 <h2> Other Values </h2>
                 <form>
                     <label>
-                        Spawn Times are currently [{items.waveSpawnTimes.map((i) =>{ return <span>[{i}]</span>})}]: 
+                        Spawn Times are currently [{items.wavespawntimes.map((i) =>{ return <span>[{i}]</span>})}]: 
                         <textarea className = "jAdd" onChange = {changeSpawnTimes} />
                     </label>
                 </form>
