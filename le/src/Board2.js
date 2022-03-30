@@ -79,8 +79,6 @@ const Board2 = ({callback}) => {
         var curW = 0
         var totalPlats = []
 
-        console.log(height)
-
         items.forEach(i => {
             if (i === "wall"){
                 curW++
@@ -89,7 +87,12 @@ const Board2 = ({callback}) => {
             if (x === 0 || i !== "wall"){
                 if (x === 0) y--
                 if (curW > 0){
-                    totalPlats.push([x - curW, y, curW])
+                    if (x - curW < 0){         
+                        totalPlats.push([width - curW, y + 1, curW])
+                    }
+                    else{
+                        totalPlats.push([x - curW, y, curW])
+                    }
                     curW = 0
                 }
             }
