@@ -79,6 +79,8 @@ const Board2 = ({callback}) => {
         var curW = 0
         var totalPlats = []
 
+        console.log(height)
+
         items.forEach(i => {
             if (i === "wall"){
                 curW++
@@ -101,7 +103,7 @@ const Board2 = ({callback}) => {
         var enemyPosForWave = []
 
         items.forEach(i => {
-            if (enemies.includes(i)){
+            if (enemies.includes(i) && i !== " "){
                 enemyPosForWave.push([x, y])
             }
             x = (x + 1) % width
@@ -123,7 +125,7 @@ const Board2 = ({callback}) => {
         items.items.forEach(itemlist => {
             var enemySlice = []
             itemlist.forEach(item => {
-                if (enemies.includes(item)){
+                if (enemies.includes(item) && item !== " "){
                     enemySlice.push(item)
                 }
             })
@@ -188,8 +190,8 @@ const Board2 = ({callback}) => {
                           startpos: JSON.parse(fileReader.result).start_pos,
                           wavenumber: JSON.parse(fileReader.result).items.length,
                           selectedwave: 1,
-                          wavespawntimes: JSON.parse(fileReader.result).spawn_order});
-                setHeight(JSON.parse(fileReader.result).height);
+                          wavespawntimes: JSON.parse(fileReader.result).spawn_times});
+                setHeight(JSON.parse(fileReader.result).level_height);
                 setBiome(JSON.parse(fileReader.result).biome);
                 setName(JSON.parse(fileReader.result).name);
             } catch(e) {
